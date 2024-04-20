@@ -2,10 +2,14 @@ import React, { createContext, useContext, useState, Dispatch, SetStateAction, R
 
 interface DataContextProps {
   response: string;
+  response2: string;
   statusCode: number | null;
+  statusCode2: number | null;
   imagePath: string;
   setResponse: Dispatch<SetStateAction<string>>;
+  setResponse2: Dispatch<SetStateAction<string>>;
   setStatusCode: Dispatch<SetStateAction<number | null>>;
+  setStatusCode2: Dispatch<SetStateAction<number | null>>;
   setImagePath: Dispatch<SetStateAction<string>>;
 }
 
@@ -25,15 +29,21 @@ interface DataProviderProps {
 
 export const DataProvider: React.FC<DataProviderProps> = ({ children }) => {
   const [response, setResponse] = useState<string>('');
+  const [response2, setResponse2] = useState<string>('');
   const [statusCode, setStatusCode] = useState<number | null>(null);
+  const [statusCode2, setStatusCode2] = useState<number | null>(null);
   const [imagePath, setImagePath] = useState<string>('');
 
   const value: DataContextProps = {
     response,
+    response2,
     statusCode,
+    statusCode2,
     imagePath,
     setResponse,
+    setResponse2,
     setStatusCode,
+    setStatusCode2,
     setImagePath,
   };
 

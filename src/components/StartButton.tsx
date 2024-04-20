@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useData } from '../contexts/DataContext';
 
 const StartButton: React.FC = () => {
-    const { imagePath, setResponse, setStatusCode } = useData();
+    const { imagePath, setResponse, setResponse2, setStatusCode, setStatusCode2 } = useData();
+    const lambdaApiUrl = import.meta.env.VITE_LAMBDA_API_URL;
+    const djangoApiUrl = import.meta.env.VITE_DJANGO_API_URL;
 
     useEffect(() => {
         axios.defaults.withCredentials = true;
@@ -11,17 +13,35 @@ const StartButton: React.FC = () => {
 
     const handleStart = async () => {
         try {
-            const requestBody = {
+            const requestBody_1 = {
                 image_path: imagePath,
             };
+            const response_1 = await axios.post(lambdaApiUrl, requestBody_1);
+            
+            const processedData = {
+                image_path: imagePath,
+                response_from_API: response_1.data,
+                request_timestamp: new Date().toISOString(),
+                response_timestamp: response_1.headers.date,
+            };
+            console.log(JSON.stringify(processedData, null, 2));
+            const requestBody_2 = processedData;
+            const response_2 = await axios.post(djangoApiUrl, requestBody_2);
 
-            const response = await axios.post('https://7qpvy8fkel.execute-api.ap-northeast-1.amazonaws.com/dev/ai_analysis_log', requestBody);
-
-            setResponse(JSON.stringify(response.data, null, 2));
-            setStatusCode(response.status);
+            setResponse2(JSON.stringify(response_2.data, null, 2));
+            setStatusCode2(response_2.status);
         } catch (error: any) {
-            setResponse(JSON.stringify(error.response?.data, null, 2));
-            setStatusCode(error.response?.status || null);
+            const processedData = {
+                image_path: imagePath,
+                response_from_API: error.response?.data, // エラーレスポンスのデータを使用
+                request_timestamp: new Date().toISOString(),
+                response_timestamp: error.response?.headers.date,
+            };
+            console.log(JSON.stringify(processedData, null, 2));
+            const response_2 = await axios.post(djangoApiUrl, processedData);
+    
+            setResponse2(JSON.stringify(response_2.data, null, 2));
+            setStatusCode2(response_2.status);
         }
     };
 
