@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useData } from '../contexts/DataContext';
 
 const StartButton: React.FC = () => {
-    const { imagePath, setResponse, setResponse2, setStatusCode, setStatusCode2 } = useData();
+    const { imagePath, setResponse2, setStatusCode2 } = useData();
     const lambdaApiUrl = import.meta.env.VITE_LAMBDA_API_URL;
     const djangoApiUrl = import.meta.env.VITE_DJANGO_API_URL;
 
@@ -37,7 +37,7 @@ const StartButton: React.FC = () => {
             const errorReceivedTime = new Date();
             const processedData = {
                 image_path: imagePath,
-                response_from_API: error.response_1?.data,
+                response_from_API: error.response?.data,
                 request_timestamp: requestSentTime.toISOString(),
                 response_timestamp: errorReceivedTime.toISOString(),
             };
@@ -51,7 +51,7 @@ const StartButton: React.FC = () => {
 
     return (
         <button className="App-link" onClick={handleStart}>
-            開始！
+            取得
         </button>
     );
 };

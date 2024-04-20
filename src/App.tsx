@@ -28,7 +28,7 @@ const Header: React.FC = () => {
       <img src={reactLogo} className="App-logo" alt="logo" />
       <img src={viteLogo} className="App-logo" alt="loog" />
       <p>
-        Edit <code>src/App.tsx</code> and save to reload.
+        画像パスを入力してください（ex: image/aaaa/bbb/test.jpg）
       </p>
     </header>
   );
