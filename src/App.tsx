@@ -6,6 +6,7 @@ import './App.css';
 
 const App: React.FC = () => {
   const [response, setResponse] = useState<string>('');
+  const [statusCode, setStatusCode] = useState<number | null>(null);
 
   const handleStart = async () => {
     try {
@@ -19,10 +20,12 @@ const App: React.FC = () => {
         response_timestamp: '2024-04-23T12:00:00+09:00'
       };
 
-      const response = await axios.post('http://127.0.0.1:8000/ai_analysis_logs/list/', requestBody);
+      const response = await axios.post('http://127.0.0.1:8000/ai_analysis_logs/create/', requestBody);
       setResponse(JSON.stringify(response.data, null, 2));
+      setStatusCode(response.status);
     } catch (error: any) {
       setResponse(error.message);
+      setStatusCode(error.response?.status || null);
     }
   };
 
@@ -38,6 +41,7 @@ const App: React.FC = () => {
         <button className="App-link" onClick={handleStart}>
           開始！
         </button>
+        {statusCode && <p>Status Code: {statusCode}</p>}
         {response && <pre>{response}</pre>}
       </header>
     </div>
