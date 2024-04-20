@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useData } from '../contexts/DataContext';
 
 const StartButton: React.FC = () => {
-    const { setResponse, setStatusCode } = useData();
+    const { imagePath, setResponse, setStatusCode } = useData();
 
     useEffect(() => {
         axios.defaults.withCredentials = true;
@@ -12,7 +12,7 @@ const StartButton: React.FC = () => {
     const handleStart = async () => {
         try {
             const requestBody = {
-                image_path: '/image/aaaa/bbbb/test.gisdff',
+                image_path: imagePath,
             };
 
             const response = await axios.post('https://7qpvy8fkel.execute-api.ap-northeast-1.amazonaws.com/dev/ai_analysis_log', requestBody);

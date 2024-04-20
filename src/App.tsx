@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import './App.css';
 import ResponseDisplay from './components/ResponseDisplay'
 import StartButton from './components/StartButton'
+import ImagePathInput from './components/ImagePathInput'
 import { DataProvider } from './contexts/DataContext'
 
 const App: React.FC = () => {
@@ -11,7 +12,10 @@ const App: React.FC = () => {
     <div className="App">
       <Header />
       <DataProvider>
-        <StartButton />
+        <div className="input-container">
+          <ImagePathInput />
+          <StartButton />
+        </div>
         <ResponseDisplay />
       </DataProvider>
     </div>
