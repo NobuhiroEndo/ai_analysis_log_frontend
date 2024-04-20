@@ -12,17 +12,20 @@ const StartButton: React.FC = () => {
     }, []);
 
     const handleStart = async () => {
+        const requestSentTime = new Date();
         try {
             const requestBody_1 = {
                 image_path: imagePath,
             };
             const response_1 = await axios.post(lambdaApiUrl, requestBody_1);
-            
+        
+            const responseReceivedTime = new Date();
+
             const processedData = {
                 image_path: imagePath,
                 response_from_API: response_1.data,
-                request_timestamp: new Date().toISOString(),
-                response_timestamp: response_1.headers.date,
+                request_timestamp: requestSentTime.toISOString(),
+                response_timestamp: responseReceivedTime.toISOString(),
             };
             console.log(JSON.stringify(processedData, null, 2));
             const requestBody_2 = processedData;
@@ -31,11 +34,12 @@ const StartButton: React.FC = () => {
             setResponse2(JSON.stringify(response_2.data, null, 2));
             setStatusCode2(response_2.status);
         } catch (error: any) {
+            const errorReceivedTime = new Date();
             const processedData = {
                 image_path: imagePath,
-                response_from_API: error.response?.data, // エラーレスポンスのデータを使用
-                request_timestamp: new Date().toISOString(),
-                response_timestamp: error.response?.headers.date,
+                response_from_API: error.response_1?.data,
+                request_timestamp: requestSentTime.toISOString(),
+                response_timestamp: errorReceivedTime.toISOString(),
             };
             console.log(JSON.stringify(processedData, null, 2));
             const response_2 = await axios.post(djangoApiUrl, processedData);
