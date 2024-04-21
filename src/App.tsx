@@ -1,47 +1,37 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React from 'react';
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css';
+import ResponseDisplay from './components/ResponseDisplay'
+import StartButton from './components/StartButton'
+import ImagePathInput from './components/ImagePathInput'
+import { DataProvider } from './contexts/DataContext'
 
 const App: React.FC = () => {
-  const [response, setResponse] = useState<string>('');
-
-  const handleStart = async () => {
-    try {
-      const requestBody = {
-        image_path: 'https://lambda.com',
-        success: true,
-        message: '失敗しました',
-        class_name: 1,
-        confidence: '0.0004',
-        request_timestamp: '2024-04-22T00:00:00+09:00',
-        response_timestamp: '2024-04-23T12:00:00+09:00'
-      };
-
-      const response = await axios.post('http://127.0.0.1:8000/ai_analysis_logs/list/', requestBody);
-      setResponse(JSON.stringify(response.data, null, 2));
-    } catch (error: any) {
-      setResponse(error.message);
-    }
-  };
-
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={reactLogo} className="App-logo" alt="logo" />
-        <img src={viteLogo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        
-        <button className="App-link" onClick={handleStart}>
-          開始！
-        </button>
-        {response && <pre>{response}</pre>}
-      </header>
+      <Header />
+      <DataProvider>
+        <div className="input-container">
+          <ImagePathInput />
+          <StartButton />
+        </div>
+        <ResponseDisplay />
+      </DataProvider>
     </div>
   );
-}
+};
+
+const Header: React.FC = () => {
+  return (
+    <header className="App-header">
+      <img src={reactLogo} className="App-logo" alt="logo" />
+      <img src={viteLogo} className="App-logo" alt="loog" />
+      <p>
+        画像パスを入力してください（ex: image/aaaa/bbb/test.jpg）
+      </p>
+    </header>
+  );
+};
 
 export default App;
